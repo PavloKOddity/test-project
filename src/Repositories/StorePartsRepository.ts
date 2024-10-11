@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { PartType } from "../Common/partTypes";
+import { PartType } from "../Common/PartTypes";
 
 interface Loader {
   id: number;
