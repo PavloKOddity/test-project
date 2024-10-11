@@ -47,7 +47,7 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
   }
 
   // Вставка частини
-  async insertPart(type: "wheel" | "door" | "window", material: string, loaderId: number): Promise<Part | null> {
+  async insertPart(type: PartType, material: string, loaderId: number): Promise<Part | null> {
     const newPart: Part = { id: this.partIdCounter++, type, material, loaderId };
     this.parts.push(newPart);
     return newPart;
@@ -74,7 +74,7 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
   }
 
   // Оновлення частини
-  async updatePart(id: number, newType: "wheel" | "door" | "window", newMaterial: string): Promise<boolean> {
+  async updatePart(id: number, newType: PartType, newMaterial: string): Promise<boolean> {
     const part = this.parts.find((part) => part.id === id);
     if (part) {
       part.type = newType;
