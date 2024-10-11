@@ -1,0 +1,39 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "ignorePatterns": [
+    "dist/",
+    "lib/"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "quotes": ["error", "double", { "avoidEscape": true }],  // Enforce double quotes for strings
+    "max-len": ["warn", { "code": 140 }], // Should be a bit more than specified with printWidth in .pretterrc
+    "prettier/prettier": "error",
+    "curly": "error",
+    "default-case": "error",
+    "no-await-in-loop": "error"
+  },
+  "overrides": [{
+    "files": ["*.ts"],
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "project": ["tsconfig.json"]
+    },
+    "extends": [
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+    }
+  }]
+}
