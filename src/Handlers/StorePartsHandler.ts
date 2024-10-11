@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { injectable } from "inversify";
-import { StorePartsRepository } from "../Repositories/StorePartsRepository";
 import { StatusCodes } from "http-status-codes";
+
+import { StorePartsRepository } from "../Repositories/StorePartsRepository";
 
 // Req body examples
 
