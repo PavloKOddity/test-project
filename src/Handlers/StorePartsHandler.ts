@@ -4,6 +4,19 @@ import { StatusCodes } from "http-status-codes";
 
 import { StorePartsRepository } from "../Repositories/StorePartsRepository";
 
+/**
+ * Task:
+ * Implement the handle method for saving data about car parts and their supplier. The system should enforce the following requirements:
+ *
+ * Each supplier can only supply one type of goods (e.g., car parts of a specific type).
+ * The handle method should validate the input to ensure that the supplier does not supply multiple types of goods.
+ * If needed, you are allowed to modify the function signatures or install additional packages to fulfill the task requirements.
+ * Clarification:
+ *
+ * Ensure that the logic for associating suppliers with goods is clearly defined.
+ * Input validation and any necessary error handling should be included.
+ */
+
 // Req body examples
 
 //{
