@@ -6,15 +6,11 @@ import { StorePartsRepository } from "../Repositories/StorePartsRepository";
 
 /**
  * Task:
- * Implement the handle method for saving data about car parts and their supplier. The system should enforce the following requirements:
+ * Implement the handle method for saving data about car parts and their supplier.
  *
- * Each supplier can only supply one type of goods (e.g., car parts of a specific type).
- * The handle method should validate the input to ensure that the supplier does not supply multiple types of goods.
- * If needed, you are allowed to modify the function signatures or install additional packages to fulfill the task requirements.
- * Clarification:
- *
- * Ensure that the logic for associating suppliers with goods is clearly defined.
- * Input validation and any necessary error handling should be included.
+ * The system should enforce the following requirements:
+ * 1. Each supplier can only supply one type of goods (e.g., car parts of a specific type).
+ * 2. If needed, you are allowed to modify the function signatures or install additional packages to fulfill the task requirements.
  */
 
 // Req body examples
