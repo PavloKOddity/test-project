@@ -12,7 +12,7 @@ describe("StorePartsRepositoryImpl", () => {
   });
 
   afterEach(async () => {
-    await repository.closeConnection();
+    await repository.flushStorage();
   });
 
   // Supplier operations
@@ -153,11 +153,11 @@ describe("StorePartsRepositoryImpl", () => {
   });
 
   // Connection operations
-  it("should reset all internal states on closeConnection", async () => {
+  it("should reset all internal states on flushStorage", async () => {
     await repository.insertSupplier("Supplier A");
     await repository.insertPart(PartTypes.Door, "Steel", 1);
 
-    await repository.closeConnection();
+    await repository.flushStorage();
     const suppliersSnapshot = repository.getSuppliersSnapshot();
     const parts = await repository.getPartsBySupplierId(1);
 
@@ -165,10 +165,10 @@ describe("StorePartsRepositoryImpl", () => {
     expect(parts.length).toBe(0);
   });
 
-  it("should wait for transaction to finish before closing", async () => {
+  it("should wait for transaction to finish before storage flushing", async () => {
     await repository.insertSupplier("Supplier A");
     repository.beginTransaction();
-    const closePromise = repository.closeConnection();
+    const closePromise = repository.flushStorage();
     repository.commitTransaction();
     await closePromise;
 

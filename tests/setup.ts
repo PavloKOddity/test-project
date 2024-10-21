@@ -11,7 +11,7 @@ export function setupTestContext() {
   });
 
   afterEach(async () => {
-    await container.get(StorePartsRepository).closeConnection();
+    await container.get(StorePartsRepository).flushStorage();
   });
 
   return {

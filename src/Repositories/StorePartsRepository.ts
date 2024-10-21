@@ -31,7 +31,7 @@ export abstract class StorePartsRepository {
 
   public abstract deletePart(id: number): Promise<boolean>;
 
-  public abstract closeConnection(): Promise<void>;
+  public abstract flushStorage(): Promise<void>;
 
   public abstract getSuppliersSnapshot(): Supplier[];
 
@@ -174,8 +174,8 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
     return false;
   }
 
-  // Close the connection (reset state) and await transaction completion
-  public async closeConnection(): Promise<void> {
+  // Flush storage (reset state) and await transaction completion
+  public async flushStorage(): Promise<void> {
     if (this.transactionActive) {
       // Wait until transaction is finished
       await new Promise<void>((resolve) => {
