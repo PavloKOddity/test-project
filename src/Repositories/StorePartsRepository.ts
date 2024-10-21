@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 
-import { PartType } from "../Common/PartTypes";
+import { PartType } from "../Common/PartType";
 
 interface Supplier {
   id: number;
@@ -16,31 +16,54 @@ interface Part {
 
 export abstract class StorePartsRepository {
   public abstract insertSupplier(name: string): Promise<Supplier>;
+
   public abstract insertPart(type: PartType, material: string, supplierId: number): Promise<Part | null>;
-  public abstract getSupplierById(id: number): Promise<Supplier | undefined>;
+
+  public abstract getSupplierById(id: number): Promise<Supplier | null>;
+
   public abstract getPartsBySupplierId(supplierId: number): Promise<Part[]>;
+
   public abstract updateSupplier(id: number, newName: string): Promise<boolean>;
+
   public abstract updatePart(id: number, newType: PartType, newMaterial: string): Promise<boolean>;
+
   public abstract deleteSupplier(id: number): Promise<boolean>;
+
   public abstract deletePart(id: number): Promise<boolean>;
+
+  public abstract closeConnection(): Promise<void>;
+
+  public abstract getSuppliersSnapshot(): Supplier[];
+
+  public abstract getSuppliers(): Supplier[];
 
   // Transaction control methods
   public abstract beginTransaction(): void;
+
   public abstract commitTransaction(): void;
+
   public abstract rollbackTransaction(): void;
 }
 
 @injectable()
 export class StorePartsRepositoryImpl implements StorePartsRepository {
-  suppliers: Supplier[] = [];
-  parts: Part[] = [];
-  supplierIdCounter = 1;
-  partIdCounter = 1;
+  private suppliers: Supplier[] = [];
+  private parts: Part[] = [];
+  private supplierIdCounter = 1;
+  private partIdCounter = 1;
 
   // Snapshots for transaction management
   private suppliersSnapshot: Supplier[] = [];
   private partsSnapshot: Part[] = [];
   private transactionActive: boolean = false;
+
+  public getSuppliers(): Supplier[] {
+    return this.suppliers;
+  }
+
+  public getSuppliersSnapshot(): Supplier[] {
+    return this.suppliersSnapshot;
+  }
 
   // Begin a transaction by taking a snapshot of the current state
   public beginTransaction(): void {
@@ -81,6 +104,11 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
 
   // Insert part
   async insertPart(type: PartType, material: string, supplierId: number): Promise<Part | null> {
+    const supplierExists = await this.getSupplierById(supplierId);
+    if (!supplierExists) {
+      return null;
+    }
+
     const newPart: Part = { id: this.partIdCounter++, type, material, supplierId };
     this.parts.push(newPart);
 
@@ -88,8 +116,8 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
   }
 
   // Get supplier by ID
-  async getSupplierById(id: number): Promise<Supplier | undefined> {
-    return this.suppliers.find((supplier) => supplier.id === id);
+  async getSupplierById(id: number): Promise<Supplier | null> {
+    return this.suppliers.find((supplier) => supplier.id === id) || null;
   }
 
   // Get parts by supplier ID
@@ -144,5 +172,29 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
     }
 
     return false;
+  }
+
+  // Close the connection (reset state) and await transaction completion
+  public async closeConnection(): Promise<void> {
+    if (this.transactionActive) {
+      // Wait until transaction is finished
+      await new Promise<void>((resolve) => {
+        const checkTransaction = setInterval(() => {
+          if (!this.transactionActive) {
+            clearInterval(checkTransaction);
+            resolve();
+          }
+        }, 100); // Check every 100ms
+      });
+    }
+
+    // Now reset the state
+    this.suppliers = [];
+    this.parts = [];
+    this.supplierIdCounter = 1;
+    this.partIdCounter = 1;
+    this.suppliersSnapshot = [];
+    this.partsSnapshot = [];
+    this.transactionActive = false;
   }
 }

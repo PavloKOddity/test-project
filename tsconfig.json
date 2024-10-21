@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
+    "target": "ES2023",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": [
+      "ES2020"
+    ],
     "strict": true,
+    // Enable all strict type-checking options
     "esModuleInterop": true,
+    // Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports
     "skipLibCheck": true,
+    // Skip type checking of all declaration files (*.d.ts)
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true,
+    // Disallow inconsistently-cased references to the same file
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
@@ -32,11 +37,22 @@
     "noImplicitReturns": true,
     // Report error when not all code paths in function return a value
     "noFallthroughCasesInSwitch": true,
+    // Specify module resolution strategy
+    "resolveJsonModule": true,
     // Include modules imported with .json extension
     "isolatedModules": true,
     // Emit ECMAScript-standard-compliant class fields.
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "baseUrl": ".",
+    "rootDir": "./src/",
+    "outDir": "./dist",
+    // Ensure that each file can be safely transpiled without relying on other imports
+    "types": ["jest", "reflect-metadata", "node"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

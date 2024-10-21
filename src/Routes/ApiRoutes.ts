@@ -1,12 +1,14 @@
 import { Router } from "express";
+import { Container } from "inversify";
 
 import { StorePartsHandler } from "../Handlers/StorePartsHandler";
-import container from "../Container";
 
-const router = Router();
+export function configureRoutes(container: Container): Router {
+  const router = Router();
 
-const storePartsHandler = container.get<StorePartsHandler>(StorePartsHandler);
+  const storePartsHandler = container.get<StorePartsHandler>(StorePartsHandler);
 
-router.post("/store-parts", (req, res) => storePartsHandler.handle(req, res));
+  router.post("/store-parts", (req, res) => storePartsHandler.handle(req, res));
 
-export default router;
+  return router;
+}
