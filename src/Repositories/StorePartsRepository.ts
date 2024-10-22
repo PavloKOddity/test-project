@@ -15,13 +15,17 @@ interface Part {
 }
 
 export abstract class StorePartsRepository {
+  public abstract getSupplierById(id: number): Supplier | null;
+
+  public abstract getSuppliersSnapshot(): Supplier[];
+
+  public abstract getSuppliers(): Supplier[];
+
+  public abstract getPartsBySupplierId(supplierId: number): Part[];
+
   public abstract insertSupplier(name: string): Promise<Supplier>;
 
   public abstract insertPart(type: PartType, material: string, supplierId: number): Promise<Part | null>;
-
-  public abstract getSupplierById(id: number): Promise<Supplier | null>;
-
-  public abstract getPartsBySupplierId(supplierId: number): Promise<Part[]>;
 
   public abstract updateSupplier(id: number, newName: string): Promise<boolean>;
 
@@ -32,10 +36,6 @@ export abstract class StorePartsRepository {
   public abstract deletePart(id: number): Promise<boolean>;
 
   public abstract flushStorage(): Promise<void>;
-
-  public abstract getSuppliersSnapshot(): Supplier[];
-
-  public abstract getSuppliers(): Supplier[];
 
   // Transaction control methods
   public abstract beginTransaction(): void;
@@ -97,81 +97,104 @@ export class StorePartsRepositoryImpl implements StorePartsRepository {
   // Insert supplier
   async insertSupplier(name: string): Promise<Supplier> {
     const newSupplier: Supplier = { id: this.supplierIdCounter++, name };
-    this.suppliers.push(newSupplier);
 
-    return newSupplier;
+    // Simulating an async database insert with a delay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.suppliers.push(newSupplier);
+        resolve(newSupplier);
+      }, 500); // Simulate a 500ms delay
+    });
   }
 
   // Insert part
   async insertPart(type: PartType, material: string, supplierId: number): Promise<Part | null> {
-    const supplierExists = await this.getSupplierById(supplierId);
+    const supplierExists = this.getSupplierById(supplierId);
     if (!supplierExists) {
       return null;
     }
 
     const newPart: Part = { id: this.partIdCounter++, type, material, supplierId };
-    this.parts.push(newPart);
 
-    return newPart;
+    // Simulating an async database insert with a delay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.parts.push(newPart);
+        resolve(newPart);
+      }, 500); // Simulate a 500ms delay
+    });
   }
 
   // Get supplier by ID
-  async getSupplierById(id: number): Promise<Supplier | null> {
+  getSupplierById(id: number): Supplier | null {
     return this.suppliers.find((supplier) => supplier.id === id) || null;
   }
 
   // Get parts by supplier ID
-  async getPartsBySupplierId(supplierId: number): Promise<Part[]> {
+  getPartsBySupplierId(supplierId: number): Part[] {
     return this.parts.filter((part) => part.supplierId === supplierId);
   }
 
   // Update supplier
   async updateSupplier(id: number, newName: string): Promise<boolean> {
-    const supplier = this.suppliers.find((supplier) => supplier.id === id);
-    if (supplier) {
-      supplier.name = newName;
-
-      return true;
-    }
-    return false;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const supplier = this.suppliers.find((supplier) => supplier.id === id);
+        if (supplier) {
+          supplier.name = newName;
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 500); // Simulate a 500ms delay
+    });
   }
 
   // Update part
   async updatePart(id: number, newType: PartType, newMaterial: string): Promise<boolean> {
-    const part = this.parts.find((part) => part.id === id);
-    if (part) {
-      part.type = newType;
-      part.material = newMaterial;
-
-      return true;
-    }
-
-    return false;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const part = this.parts.find((part) => part.id === id);
+        if (part) {
+          part.type = newType;
+          part.material = newMaterial;
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 500); // Simulate a 500ms delay
+    });
   }
 
   // Delete supplier
   async deleteSupplier(id: number): Promise<boolean> {
-    const index = this.suppliers.findIndex((supplier) => supplier.id === id);
-    if (index !== -1) {
-      this.suppliers.splice(index, 1);
-      this.parts = this.parts.filter((part) => part.supplierId !== id);
-
-      return true;
-    }
-
-    return false;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const index = this.suppliers.findIndex((supplier) => supplier.id === id);
+        if (index !== -1) {
+          this.suppliers.splice(index, 1);
+          this.parts = this.parts.filter((part) => part.supplierId !== id);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 500); // Simulate a 500ms delay
+    });
   }
 
   // Delete part
   async deletePart(id: number): Promise<boolean> {
-    const index = this.parts.findIndex((part) => part.id === id);
-    if (index !== -1) {
-      this.parts.splice(index, 1);
-
-      return true;
-    }
-
-    return false;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const index = this.parts.findIndex((part) => part.id === id);
+        if (index !== -1) {
+          this.parts.splice(index, 1);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 500); // Simulate a 500ms delay
+    });
   }
 
   // Flush storage (reset state) and await transaction completion

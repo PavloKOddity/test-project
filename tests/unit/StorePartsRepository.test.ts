@@ -35,20 +35,20 @@ describe("StorePartsRepositoryImpl", () => {
 
   it("should return the correct supplier by ID", async () => {
     const supplier = await repository.insertSupplier("Supplier A");
-    const fetchedSupplier = await repository.getSupplierById(supplier.id);
+    const fetchedSupplier = repository.getSupplierById(supplier.id);
 
     expect(fetchedSupplier).toEqual(supplier);
   });
 
   it("should return undefined if supplier does not exist", async () => {
-    const fetchedSupplier = await repository.getSupplierById(999);
+    const fetchedSupplier = repository.getSupplierById(999);
     expect(fetchedSupplier).toBeNull();
   });
 
   it("should update an existing supplier's name", async () => {
     const supplier = await repository.insertSupplier("Supplier A");
     const result = await repository.updateSupplier(supplier.id, "Supplier B");
-    const updatedSupplier = await repository.getSupplierById(supplier.id);
+    const updatedSupplier = repository.getSupplierById(supplier.id);
 
     expect(result).toBe(true);
     expect(updatedSupplier?.name).toBe("Supplier B");
@@ -63,8 +63,8 @@ describe("StorePartsRepositoryImpl", () => {
     const supplier = await repository.insertSupplier("Supplier A");
     await repository.insertPart(PartTypes.Wheel, "Steel", supplier.id);
     const deleteResult = await repository.deleteSupplier(supplier.id);
-    const fetchedSupplier = await repository.getSupplierById(supplier.id);
-    const fetchedParts = await repository.getPartsBySupplierId(supplier.id);
+    const fetchedSupplier = repository.getSupplierById(supplier.id);
+    const fetchedParts = repository.getPartsBySupplierId(supplier.id);
 
     expect(deleteResult).toBe(true);
     expect(fetchedSupplier).toBeNull();
@@ -80,7 +80,7 @@ describe("StorePartsRepositoryImpl", () => {
   it("should insert a part", async () => {
     const supplier = await repository.insertSupplier("Supplier A");
     const part = await repository.insertPart(PartTypes.Wheel, "Steel", supplier.id);
-    const parts = await repository.getPartsBySupplierId(supplier.id);
+    const parts = repository.getPartsBySupplierId(supplier.id);
 
     expect(parts.length).toBe(1);
     expect(parts[0]).toEqual(part);
@@ -95,7 +95,7 @@ describe("StorePartsRepositoryImpl", () => {
     const supplier = await repository.insertSupplier("Supplier A");
     const part = await repository.insertPart(PartTypes.Door, "Steel", supplier.id);
     const result = await repository.updatePart(part!.id, PartTypes.Window, "Oak");
-    const updatedParts = await repository.getPartsBySupplierId(supplier.id);
+    const updatedParts = repository.getPartsBySupplierId(supplier.id);
 
     expect(result).toBe(true);
     expect(updatedParts[0].type).toBe(PartTypes.Window);
@@ -111,7 +111,7 @@ describe("StorePartsRepositoryImpl", () => {
     const supplier = await repository.insertSupplier("Supplier A");
     const part = await repository.insertPart(PartTypes.Door, "Steel", supplier.id);
     const deleteResult = await repository.deletePart(part!.id);
-    const parts = await repository.getPartsBySupplierId(supplier.id);
+    const parts = repository.getPartsBySupplierId(supplier.id);
 
     expect(deleteResult).toBe(true);
     expect(parts.length).toBe(0);
@@ -159,7 +159,7 @@ describe("StorePartsRepositoryImpl", () => {
 
     await repository.flushStorage();
     const suppliersSnapshot = repository.getSuppliersSnapshot();
-    const parts = await repository.getPartsBySupplierId(1);
+    const parts = repository.getPartsBySupplierId(1);
 
     expect(suppliersSnapshot.length).toBe(0);
     expect(parts.length).toBe(0);
