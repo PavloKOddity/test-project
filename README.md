@@ -2,7 +2,7 @@
 
 ## Overview
 
-This system is designed to manage data about car parts and their respective suppliers. It enforces certain business rules to ensure that each supplier can only supply one type of goods.
+This system is designed to manage data about car parts and their respective suppliers. It enforces certain business rules to ensure that each supplier can only supply one type of goods per request.
 
 ## Task Requirements
 
@@ -12,7 +12,7 @@ Your task is to implement the `handle` method, which will be responsible for sav
 
 ### Requirements
 
-1. Each supplier can only supply one type of goods (e.g., car parts of a specific type).
+1. Each supplier can only supply one type of goods per request (e.g., car parts of a specific type).
 2. If needed, you are allowed to modify the function signatures or install additional packages to fulfill the task requirements.
 
 ## Request Body Examples
