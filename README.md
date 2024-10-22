@@ -72,13 +72,13 @@ The following examples illustrate the expected structure of the request body whe
       "type": "window",
       "height": 1.2,
       "width": 1.0,
-      "glassType": "tempered"
+      "material": "glass"
     },
     {
       "type": "window",
       "height": 1.5,
       "width": 1.2,
-      "glassType": "laminated"
+      "material": "glass"
     }
   ]
 }
