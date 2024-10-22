@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { StorePartsRepository } from "../Repositories/StorePartsRepository";
 
 /**
- * Task:
+ * Task requirements:
  * Implement the handle method for saving data about car parts and their supplier.
  *
  * The system should enforce the following requirements:
