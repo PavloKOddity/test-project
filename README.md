@@ -82,4 +82,25 @@ The following examples illustrate the expected structure of the request body whe
     }
   ]
 }
+
+{
+  "loader": {
+    "loaderId": "12345",
+    "loaderName": "John Doe"
+  },
+  "parts": [
+    {
+      "type": "window",
+      "height": 1.2,
+      "width": 1.0,
+      "material": "glass"
+    },
+    {
+      "type": "door",
+      "height": 2.0,
+      "width": 0.8,
+      "material": "aluminum"
+    }
+  ]
+}
 ```
